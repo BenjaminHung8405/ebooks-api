@@ -1,5 +1,8 @@
-/**
- * Updated by trungquandev.com's author on August 17 2023
- * YouTube: https://youtube.com/@trungquandev
- * "A bit of fragrance clings to the hand that gives flowers!"
- */
+import express from 'express'
+import { bannerController } from '~/controllers/book/bannerController'
+
+const Router = express.Router()
+
+Router.route('/banner').get(bannerController.getDetails)
+
+export const APIs_V2 = Router

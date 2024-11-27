@@ -1,10 +1,5 @@
-/**
- * Updated by trungquandev.com's author on August 17 2023
- * YouTube: https://youtube.com/@trungquandev
- * "A bit of fragrance clings to the hand that gives flowers!"
- */
 import { StatusCodes } from "http-status-codes"
-import { bookService } from "~/services/bookService"
+import { bookService } from "~/services/book/bookService"
 
 const createNew = async (req, res ,next) => {
   try {
@@ -21,16 +16,24 @@ const createNew = async (req, res ,next) => {
   } catch (error) { next(error) }
 }
 
+const getAllDetails = async (req, res ,next) => {
+  try {
+    const book = await bookService.getAllDetails()
+    res.status(StatusCodes.OK).json(book)
+  } catch (error) { next(error) }
+}
+
 const getDetails = async (req, res ,next) => {
   try {
-    const boardId = req.params.id
+    const bookId = req.params.id
     
-    const board = await bookService.getDetails(boardId)
+    const board = await bookService.getDetails(bookId)
     res.status(StatusCodes.OK).json(board)
   } catch (error) { next(error) }
 }
 
 export const bookController = {
     createNew,
-    getDetails
+    getDetails,
+    getAllDetails
 }

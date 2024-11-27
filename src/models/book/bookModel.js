@@ -1,21 +1,28 @@
 import Joi from "joi";
 import { ObjectId } from "mongodb";
 import { GET_DB } from "~/config/mongodb";
-import { bookcateModel } from "./category/bookCategories";
+import { bookcateModel } from "../category/bookCategories";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validators'
+import { chapterModel } from "./chapterModel";
 // Define Collection (Name & Schema)
 const BOOK_COLLECTION_NAME = 'books'
 const BOOK_COLLECTION_SHCHEMA = Joi.object({
     title: Joi.string().required().min(1).max(50).trim().strict(),
-    description: Joi.string().required().min(1).max(255).trim().strict(),
+    // description: Joi.string().required().min(1).max(255).trim().strict(),
+    // content: Joi.string().required().min(1),
 
-    authorId: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
+    // authorId: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
 
     categoryIds: Joi.array().items(
         Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)
     ).default([]),
+    chapterIds: Joi.array().items(
+        Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)
+    ).default([]),
 
-    publishedAt: Joi.date(),
+    // publishedAt: Joi.date(),
+
+    coverImage: Joi.string().required().min(1),
 });
 
 const validateBeforeCreate = async (data) => {
@@ -33,28 +40,34 @@ const createNew = async (data) => {
 
 const findOneById = async (id) => {
     try {
-            // const result = await GET_DB().collection(USER_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
-        const result = await GET_DB().collection(BOOK_COLLECTION_NAME).aggregate([
-            { $match: {
-                _id: new ObjectId(id),
-                _destroy: false
-            } },
-            { $lookup: {
-                from: bookcateModel.BOOKCATE_COLLECTION_NAME,
-                localField: '_id',
-                foreignField: 'bookId',
-                as: 'book_categories'
-            } }
-        ]).toArray()
-        console.log(result);
-        return result[0] || {} 
+        const result = await GET_DB().collection(BOOK_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
+        return result
+    } catch (error) { throw new Error(error) }
+}
+
+const getAllDetails = async () => {
+    try {
+            const result = await GET_DB().collection(BOOK_COLLECTION_NAME).find({}).toArray()
+        return result
     } catch (error) { throw new Error(error) }
 }
 
 const getDetails = async (id) => {
     try {
-            const result = await GET_DB().collection(BOOK_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
-        return result
+        // const result = await GET_DB().collection(USER_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
+        const result = await GET_DB().collection(BOOK_COLLECTION_NAME).aggregate([
+            { $match: {
+                _id: new ObjectId(id),
+            } },
+            { $lookup: {
+                from: chapterModel.CHAPTER_COLLECTION_NAME,
+                localField: '_id',
+                foreignField: 'bookId',
+                as: 'chapters'
+            } }
+        ]).toArray()
+        console.log(result);
+        return result[0] || {} 
     } catch (error) { throw new Error(error) }
 }
 
@@ -63,5 +76,6 @@ export const bookModel = {
     BOOK_COLLECTION_SHCHEMA,
     createNew,
     findOneById,
-    getDetails
+    getDetails,
+    getAllDetails
 }

@@ -1,6 +1,6 @@
 import express from 'express'
-import { bookValidation } from '~/validations/bookValidation'
-import { bookController } from '~/controllers/bookController'
+import { bookValidation } from '~/validations/book/bookValidation'
+import { bookController } from '~/controllers/book/bookController'
 
 const Router = express.Router()
 
@@ -10,6 +10,8 @@ Router.route('/')
     })
     
     .post(bookValidation.createNew, bookController.createNew)
+
+Router.route('/get').get(bookController.getAllDetails)
 
 Router.route('/:id')
     .get(bookController.getDetails)

@@ -54,7 +54,7 @@ const login = async (req, res ,next) => {
     }
     
     let tokenData = { _id:existingUser._id, email:existingUser.email }
-    const token = await userService.generateToken(tokenData,'secretKey','1h')
+    const token = await userService.generateToken(tokenData,'secretKey','7d')
 
     res.status(200).json({ status:true,token:token })
 

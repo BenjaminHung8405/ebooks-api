@@ -1,20 +1,19 @@
 import { StatusCodes } from "http-status-codes"
-import { bookModel } from "~/models/bookModel"
+import { chapterModel } from "~/models/book/chapterModel"
 import ApiError from "~/utils/ApiError"
 const createNew = async (reqBody) => {
   try {
-    const newBook = {
+    const newChapter = {
         ...reqBody,
         // slug: slugify(reqBody.title)
     }
 
-    const createdBook = await bookModel.createNew(newBook)
+    const createdChapter= await chapterModel.createNew(newChapter)
     // console.log(createdBoard)
 
-    const getNewBook = await bookModel.findOneById(createdBook.insertedId)
     // console.log(getNewBoard)
 
-    return getNewBook
+    return createdChapter
   } catch (error) {
     throw error
   }
@@ -22,18 +21,18 @@ const createNew = async (reqBody) => {
 
 const getDetails = async (boardId) => {
   try {
-    const user = await bookModel.getDetails(boardId)
-    if(!user){
+    const chapter = await chapterModel.getDetails(boardId)
+    if(!chapter){
       throw new ApiError(StatusCodes.NOT_FOUND, 'Board not found!')
     }
 
-    return user
+    return chapter
   } catch (error) {
     throw error
   }
 }
 
-export const bookService = {
+export const chapterService = {
     createNew,
     getDetails
 }
