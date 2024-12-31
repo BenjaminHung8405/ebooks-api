@@ -1,6 +1,7 @@
 import Joi from "joi";
 import { GET_DB } from "~/config/mongodb"
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validators'
+import { ObjectId } from "mongodb";
 
 // Define Collection (Name & Schema)
 const CHAPTER_COLLECTION_NAME = 'chapters'
@@ -25,7 +26,7 @@ const createNew = async (data) => {
 
 const getDetails = async (id) => {
     try {
-            const result = await GET_DB().collection(CHAPTER_COLLECTION_NAME).find({}).toArray()
+        const result = await GET_DB().collection(CHAPTER_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
         return result
     } catch (error) { throw new Error(error) }
 }

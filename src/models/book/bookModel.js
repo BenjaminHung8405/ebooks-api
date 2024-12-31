@@ -1,7 +1,6 @@
 import Joi from "joi";
 import { ObjectId } from "mongodb";
 import { GET_DB } from "~/config/mongodb";
-import { bookcateModel } from "../category/bookCategories";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validators'
 import { chapterModel } from "./chapterModel";
 // Define Collection (Name & Schema)
@@ -48,8 +47,22 @@ const findOneById = async (id) => {
 const getAllDetails = async () => {
     try {
             const result = await GET_DB().collection(BOOK_COLLECTION_NAME).find({}).toArray()
+            console.log(result);
         return result
     } catch (error) { throw new Error(error) }
+    // try {
+    //     const result = await GET_DB().collection(BOOK_COLLECTION_NAME).aggregate([
+    //         { $match: {} },
+    //         { $lookup: {
+    //             from: chapterModel.CHAPTER_COLLECTION_NAME,
+    //             localField: '_id',
+    //             foreignField: 'bookId',
+    //             as: 'chapters'
+    //         } }
+    //     ]).toArray()
+    //     console.log(result);
+    //     return result[0] || {} 
+    // } catch (error) { throw new Error(error) }
 }
 
 const getDetails = async (id) => {
