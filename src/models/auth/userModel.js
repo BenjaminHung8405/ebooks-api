@@ -9,8 +9,15 @@ const USER_COLLECTION_SHCHEMA = Joi.object({
 
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
-
-    createdAt: Joi.date().timestamp('javascript').default(Date.now),
+    picture: Joi.object({
+        large: Joi.string().default('https://m.media-amazon.com/images/I/31jPSK41kEL.jpg'),
+        medium: Joi.string().default('https://m.media-amazon.com/images/I/31jPSK41kEL.jpg'),
+        thumbnail: Joi.string().default('https://m.media-amazon.com/images/I/31jPSK41kEL.jpg'),
+    }).default({
+        large: 'https://m.media-amazon.com/images/I/31jPSK41kEL.jpg',
+        medium: 'https://m.media-amazon.com/images/I/31jPSK41kEL.jpg',
+        thumbnail: 'https://m.media-amazon.com/images/I/31jPSK41kEL.jpg'
+    })
 });
 
 
@@ -22,7 +29,6 @@ const validateBeforeCreate = async (data) => {
 const createNew = async (data) => {
     try {
         const validData = await validateBeforeCreate(data)
-        console.log('Valid Data: ', validData)
         const createdBoard = await GET_DB().collection(USER_COLLECTION_NAME).insertOne(validData)
         return createdBoard
     } catch (error) { throw new Error(error) }
@@ -51,8 +57,9 @@ const findUserByEmail = async (email) => {
     try { 
         const user = await GET_DB().collection(USER_COLLECTION_NAME).findOne({ email: email }); 
         return user; 
-    } catch (error) { 
-        throw new Error('Error in finding user by email'); 
+    } catch (error) {
+        console.error('Error finding user by email:', error.message);
+        throw new Error('Error in finding user by email');
     }
 };
 

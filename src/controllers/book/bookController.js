@@ -3,8 +3,6 @@ import { bookService } from "~/services/book/bookService"
 
 const createNew = async (req, res ,next) => {
   try {
-    console.log('req.body', req.body)
-    console.log(req.header("accessToken"));
     // console.log('req.query', req.query)
     // console.log('req.params', req.params)
     // console.log('req.files', req.files)

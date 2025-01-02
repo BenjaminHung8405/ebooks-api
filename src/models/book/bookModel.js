@@ -31,7 +31,6 @@ const validateBeforeCreate = async (data) => {
 const createNew = async (data) => {
     try {
         const validData = await validateBeforeCreate(data)
-        console.log('Valid Data: ', validData)
         const createdBoard = await GET_DB().collection(BOOK_COLLECTION_NAME).insertOne(validData)
         return createdBoard
     } catch (error) { throw new Error(error) }
@@ -47,7 +46,6 @@ const findOneById = async (id) => {
 const getAllDetails = async () => {
     try {
             const result = await GET_DB().collection(BOOK_COLLECTION_NAME).find({}).toArray()
-            console.log(result);
         return result
     } catch (error) { throw new Error(error) }
     // try {
@@ -79,7 +77,6 @@ const getDetails = async (id) => {
                 as: 'chapters'
             } }
         ]).toArray()
-        console.log(result);
         return result[0] || {} 
     } catch (error) { throw new Error(error) }
 }

@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes"
-import { userModel } from "~/models/userModel"
+import { userModel } from "~/models/auth/userModel"
 import ApiError from "~/utils/ApiError"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
