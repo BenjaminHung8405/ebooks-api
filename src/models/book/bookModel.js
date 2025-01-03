@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { ObjectId } from "mongodb";
+import { Double, ObjectId } from "mongodb";
 import { GET_DB } from "~/config/mongodb";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validators'
 import { chapterModel } from "./chapterModel";
@@ -20,8 +20,9 @@ const BOOK_COLLECTION_SHCHEMA = Joi.object({
     ).default([]),
 
     // publishedAt: Joi.date(),
-
     coverImage: Joi.string().required().min(1),
+    author: Joi.string().required().min(1).max(64).trim(),
+    rate: Joi.number().required().min(0).max(5)
 });
 
 const validateBeforeCreate = async (data) => {

@@ -21,6 +21,8 @@ const createNew = async (req, res, next) => {
         // publishedAt: Joi.date(),
 
         coverImage: Joi.string().required().min(1),
+        author: Joi.string().required().min(1).max(64).trim(),
+        rate: Joi.number().required().min(0).max(5)
     });
 
     try {
