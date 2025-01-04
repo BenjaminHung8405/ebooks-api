@@ -7,7 +7,7 @@ import { chapterModel } from "./chapterModel";
 const BOOK_COLLECTION_NAME = 'books'
 const BOOK_COLLECTION_SHCHEMA = Joi.object({
     title: Joi.string().required().min(1).max(50).trim().strict(),
-    // description: Joi.string().required().min(1).max(255).trim().strict(),
+    description: Joi.string().required().min(1).max(255).trim().strict(),
     // content: Joi.string().required().min(1),
 
     // authorId: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE),
@@ -22,6 +22,8 @@ const BOOK_COLLECTION_SHCHEMA = Joi.object({
     // publishedAt: Joi.date(),
     coverImage: Joi.string().required().min(1),
     author: Joi.string().required().min(1).max(64).trim(),
+    description: Joi.string().required().min(1).trim().strict(),
+    shortDescription: Joi.string().required().min(1).max(2000).trim().strict(),
     rate: Joi.number().required().min(0).max(5)
 });
 
